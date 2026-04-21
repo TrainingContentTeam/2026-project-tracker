@@ -131,6 +131,7 @@ function CourseDetail() {
             <h2 className="text-lg font-semibold mb-4">Details</h2>
             <dl className="space-y-3 text-sm">
               <Field label="Date Assigned" value={formatDate(course.date_assigned)} />
+              <Field label="Start Date" value={formatDate(course.start_date)} />
               <Field label="Due Date" value={formatDate(course.due_date)} />
               <Field label="SME(s)" value={course.sme} />
               <Field label="Voice Over Artist" value={course.voice_over_artist} />
