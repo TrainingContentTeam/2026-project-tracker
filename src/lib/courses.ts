@@ -22,6 +22,7 @@ export interface Course {
   quarter: string | null;
   vertical: string | null;
   date_assigned: string | null;
+  start_date: string | null;
   due_date: string | null;
   sme: string | null;
   voice_over_artist: string | null;

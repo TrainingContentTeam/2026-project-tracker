@@ -69,6 +69,7 @@ export type Database = {
           progress_note: string | null
           quarter: string | null
           sme: string | null
+          start_date: string | null
           technical_tools: string | null
           updated_at: string
           uploaded_to_lms: string | null
@@ -88,6 +89,7 @@ export type Database = {
           progress_note?: string | null
           quarter?: string | null
           sme?: string | null
+          start_date?: string | null
           technical_tools?: string | null
           updated_at?: string
           uploaded_to_lms?: string | null
@@ -107,6 +109,7 @@ export type Database = {
           progress_note?: string | null
           quarter?: string | null
           sme?: string | null
+          start_date?: string | null
           technical_tools?: string | null
           updated_at?: string
           uploaded_to_lms?: string | null

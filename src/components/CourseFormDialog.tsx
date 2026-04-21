@@ -21,6 +21,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
     quarter: "",
     vertical: "",
     date_assigned: "",
+    start_date: "",
     due_date: "",
     sme: "",
     voice_over_artist: "",
@@ -37,6 +38,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
         quarter: course.quarter ?? "",
         vertical: course.vertical ?? "",
         date_assigned: course.date_assigned ?? "",
+        start_date: course.start_date ?? "",
         due_date: course.due_date ?? "",
         sme: course.sme ?? "",
         voice_over_artist: course.voice_over_artist ?? "",
@@ -46,7 +48,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
       });
     } else {
       setForm({
-        name: "", quarter: "", vertical: "", date_assigned: "", due_date: "",
+        name: "", quarter: "", vertical: "", date_assigned: "", start_date: "", due_date: "",
         sme: "", voice_over_artist: "", legal_review_contact: "", technical_tools: "", comments: "",
       });
     }
@@ -61,6 +63,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
     const payload = {
       ...form,
       date_assigned: form.date_assigned || null,
+      start_date: form.start_date || null,
       due_date: form.due_date || null,
       quarter: form.quarter || null,
       vertical: form.vertical || null,
@@ -113,6 +116,12 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
               <Label htmlFor="date_assigned">Date Assigned</Label>
               <Input id="date_assigned" type="date" value={form.date_assigned} onChange={(e) => setForm({ ...form, date_assigned: e.target.value })} />
             </div>
+            <div className="grid gap-2">
+              <Label htmlFor="start_date">Start Date</Label>
+              <Input id="start_date" type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="due_date">Due Date</Label>
               <Input id="due_date" type="date" value={form.due_date} onChange={(e) => setForm({ ...form, due_date: e.target.value })} />
