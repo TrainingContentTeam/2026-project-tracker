@@ -14,7 +14,107 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      course_stages: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          course_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          stage_name: Database["public"]["Enums"]["production_stage"]
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          course_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          stage_name: Database["public"]["Enums"]["production_stage"]
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          course_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          stage_name?: Database["public"]["Enums"]["production_stage"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_stages_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          comments: string | null
+          course_outline: string | null
+          created_at: string
+          date_assigned: string | null
+          due_date: string | null
+          id: string
+          legal_review_contact: string | null
+          lesson_plan: string | null
+          name: string
+          progress_note: string | null
+          quarter: string | null
+          sme: string | null
+          technical_tools: string | null
+          updated_at: string
+          uploaded_to_lms: string | null
+          vertical: string | null
+          voice_over_artist: string | null
+        }
+        Insert: {
+          comments?: string | null
+          course_outline?: string | null
+          created_at?: string
+          date_assigned?: string | null
+          due_date?: string | null
+          id?: string
+          legal_review_contact?: string | null
+          lesson_plan?: string | null
+          name: string
+          progress_note?: string | null
+          quarter?: string | null
+          sme?: string | null
+          technical_tools?: string | null
+          updated_at?: string
+          uploaded_to_lms?: string | null
+          vertical?: string | null
+          voice_over_artist?: string | null
+        }
+        Update: {
+          comments?: string | null
+          course_outline?: string | null
+          created_at?: string
+          date_assigned?: string | null
+          due_date?: string | null
+          id?: string
+          legal_review_contact?: string | null
+          lesson_plan?: string | null
+          name?: string
+          progress_note?: string | null
+          quarter?: string | null
+          sme?: string | null
+          technical_tools?: string | null
+          updated_at?: string
+          uploaded_to_lms?: string | null
+          vertical?: string | null
+          voice_over_artist?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +123,16 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      production_stage:
+        | "SME"
+        | "Peer Review"
+        | "Legal/Policy Review"
+        | "Medical Review"
+        | "CQO"
+        | "Outline"
+        | "Survey"
+        | "In Development"
+        | "Testing w/ Peer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +259,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      production_stage: [
+        "SME",
+        "Peer Review",
+        "Legal/Policy Review",
+        "Medical Review",
+        "CQO",
+        "Outline",
+        "Survey",
+        "In Development",
+        "Testing w/ Peer",
+      ],
+    },
   },
 } as const
