@@ -10,6 +10,8 @@ export const STAGES = [
   "Survey",
   "In Development",
   "Testing w/ Peer",
+  "Testing w/ LMS Coordinator",
+  "Published",
 ] as const;
 
 export type StageName = (typeof STAGES)[number];
