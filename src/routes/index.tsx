@@ -110,9 +110,9 @@ function Dashboard() {
               <Input placeholder="Search course name..." className="pl-9" value={search} onChange={(e) => setSearch(e.target.value)} />
             </div>
             <Select value={quarter} onValueChange={setQuarter}>
-              <SelectTrigger><SelectValue placeholder="Quarter" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="Year/Quarter" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All quarters</SelectItem>
+                <SelectItem value="all">All Year/Quarter</SelectItem>
                 {quarters.map((q) => <SelectItem key={q} value={q}>{q}</SelectItem>)}
               </SelectContent>
             </Select>
@@ -148,7 +148,7 @@ function Dashboard() {
                   <thead className="bg-muted/50 text-left text-xs uppercase tracking-wide text-muted-foreground">
                     <tr>
                       <th className="px-4 py-3 font-medium">Course Name</th>
-                      <th className="px-4 py-3 font-medium">Quarter</th>
+                      <th className="px-4 py-3 font-medium">Year/Quarter</th>
                       <th className="px-4 py-3 font-medium">Vertical</th>
                       <th className="px-4 py-3 font-medium">Start</th>
                       <th className="px-4 py-3 font-medium">Due</th>
