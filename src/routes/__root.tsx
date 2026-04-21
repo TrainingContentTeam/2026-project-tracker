@@ -32,14 +32,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Course Production Tracker" },
-      { name: "description", content: "Track e-learning course production stages from SME to Testing." },
+      { title: "Course Progress Tracker" },
+      { name: "description", content: "project management course tracker." },
       { name: "author", content: "Course Production Tracker" },
-      { property: "og:title", content: "Course Production Tracker" },
-      { property: "og:description", content: "Track e-learning course production stages." },
+      { property: "og:title", content: "Course Progress Tracker" },
+      { property: "og:description", content: "project management course tracker." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Course Progress Tracker" },
+      { name: "twitter:description", content: "project management course tracker." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bf288e53-6984-4d76-9703-f2c623d9dc6c/id-preview-e2ca62ab--bb59dc0d-a70a-40d7-97ad-9e5b7111f9b4.lovable.app-1776789248457.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bf288e53-6984-4d76-9703-f2c623d9dc6c/id-preview-e2ca62ab--bb59dc0d-a70a-40d7-97ad-9e5b7111f9b4.lovable.app-1776789248457.png" },
     ],
     links: [
       {
