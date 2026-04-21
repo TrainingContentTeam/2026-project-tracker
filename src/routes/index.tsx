@@ -172,6 +172,9 @@ function Dashboard() {
                             <Link to="/courses/$courseId" params={{ courseId: c.id }} className="font-medium text-foreground hover:underline">
                               {c.name}
                             </Link>
+                            {p.done === p.total && p.total > 0 && (
+                              <CheckCircle2 className="ml-2 inline h-4 w-4 text-success" aria-label="Completed" />
+                            )}
                           </td>
                           <td className="px-4 py-3 text-muted-foreground">{c.quarter ?? "—"}</td>
                           <td className="px-4 py-3"><Badge variant="secondary">{c.vertical ?? "—"}</Badge></td>
@@ -200,7 +203,12 @@ function Dashboard() {
                   const p = progressOf(c.stages);
                   return (
                     <Link key={c.id} to="/courses/$courseId" params={{ courseId: c.id }} className="block p-4 hover:bg-muted/30">
-                      <div className="font-medium text-foreground">{c.name}</div>
+                      <div className="font-medium text-foreground">
+                        {c.name}
+                        {p.done === p.total && p.total > 0 && (
+                          <CheckCircle2 className="ml-2 inline h-4 w-4 text-success" aria-label="Completed" />
+                        )}
+                      </div>
                       <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                         <span>{c.quarter ?? "—"}</span>
                         <span>•</span>
