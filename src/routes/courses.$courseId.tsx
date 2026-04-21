@@ -11,15 +11,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { CourseFormDialog } from "@/components/CourseFormDialog";
 import { ArrowLeft, Pencil, Trash2, CheckCircle2, Circle } from "lucide-react";
 import { toast } from "sonner";
+import { friendlyError } from "@/lib/errors";
 
 export const Route = createFileRoute("/courses/$courseId")({
   component: CourseDetail,
   head: () => ({
     meta: [{ title: "Course Detail — Course Production Tracker" }],
   }),
-  errorComponent: ({ error }) => (
+  errorComponent: () => (
     <div className="p-8 text-center">
-      <p className="text-destructive">Error loading course: {error.message}</p>
+      <p className="text-destructive">Unable to load course. Please return to the dashboard.</p>
       <Link to="/" className="text-primary hover:underline mt-4 inline-block">← Back to dashboard</Link>
     </div>
   ),
@@ -46,7 +47,7 @@ function CourseDetail() {
       .from("course_stages")
       .update({ completed, completed_at: completed ? new Date().toISOString() : null })
       .eq("id", stage.id);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(friendlyError(error));
     setCourse((c) => c ? {
       ...c,
       stages: c.stages.map((s) => s.id === stage.id ? { ...s, completed, completed_at: completed ? new Date().toISOString() : null } : s),
@@ -55,7 +56,7 @@ function CourseDetail() {
 
   async function updateNotes(stage: CourseStage, notes: string) {
     const { error } = await supabase.from("course_stages").update({ notes }).eq("id", stage.id);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(friendlyError(error));
     setCourse((c) => c ? {
       ...c,
       stages: c.stages.map((s) => s.id === stage.id ? { ...s, notes } : s),
@@ -65,7 +66,7 @@ function CourseDetail() {
   async function handleDelete() {
     if (!confirm("Delete this course? This cannot be undone.")) return;
     const { error } = await supabase.from("courses").delete().eq("id", courseId);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(friendlyError(error));
     toast.success("Course deleted");
     navigate({ to: "/" });
   }

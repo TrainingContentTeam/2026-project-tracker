@@ -8,7 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CourseFormDialog } from "@/components/CourseFormDialog";
-import { Plus, Search, ChevronRight, BookOpen, CheckCircle2, Clock } from "lucide-react";
+import { Plus, Search, ChevronRight, BookOpen, CheckCircle2, Clock, LogOut } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Dashboard() {
+  const { signOut } = useAuth();
   const [courses, setCourses] = useState<CourseWithStages[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -88,9 +90,14 @@ function Dashboard() {
               <h1 className="text-2xl font-bold tracking-tight text-foreground">2026 Course Tracker</h1>
               <p className="mt-1 text-sm text-muted-foreground">Track each 2026 course through the 11 production stages.</p>
             </div>
-            <Button onClick={() => setDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Course
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={() => setDialogOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" /> Add Course
+              </Button>
+              <Button variant="outline" onClick={() => signOut()}>
+                <LogOut className="mr-2 h-4 w-4" /> Sign out
+              </Button>
+            </div>
           </div>
         </div>
       </header>
