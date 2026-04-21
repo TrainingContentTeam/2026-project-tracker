@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
   head: () => ({
     meta: [
-      { title: "Course Production Tracker" },
+      { title: "2026 Course Tracker" },
       { name: "description", content: "Dashboard for tracking e-learning course production stages." },
     ],
   }),
@@ -41,17 +41,22 @@ function Dashboard() {
 
   useEffect(() => { load(); }, []);
 
+  const courses2026 = useMemo(
+    () => courses.filter((c) => (c.quarter ?? "").includes("2026")),
+    [courses],
+  );
+
   const quarters = useMemo(() => {
-    const set = new Set(courses.map((c) => c.quarter).filter(Boolean) as string[]);
+    const set = new Set(courses2026.map((c) => c.quarter).filter(Boolean) as string[]);
     return Array.from(set).sort();
-  }, [courses]);
+  }, [courses2026]);
   const verticals = useMemo(() => {
-    const set = new Set(courses.map((c) => c.vertical).filter(Boolean) as string[]);
+    const set = new Set(courses2026.map((c) => c.vertical).filter(Boolean) as string[]);
     return Array.from(set).sort();
-  }, [courses]);
+  }, [courses2026]);
 
   const filtered = useMemo(() => {
-    return courses.filter((c) => {
+    return courses2026.filter((c) => {
       if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
       if (quarter !== "all" && c.quarter !== quarter) return false;
       if (vertical !== "all" && c.vertical !== vertical) return false;
@@ -61,18 +66,18 @@ function Dashboard() {
       if (status === "not_started" && p.done !== 0) return false;
       return true;
     });
-  }, [courses, search, quarter, vertical, status]);
+  }, [courses2026, search, quarter, vertical, status]);
 
   const stats = useMemo(() => {
-    const total = courses.length;
+    const total = courses2026.length;
     let completed = 0, inProgress = 0;
-    courses.forEach((c) => {
+    courses2026.forEach((c) => {
       const p = progressOf(c.stages);
       if (p.done === p.total) completed++;
       else if (p.done > 0) inProgress++;
     });
     return { total, completed, inProgress, notStarted: total - completed - inProgress };
-  }, [courses]);
+  }, [courses2026]);
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -80,8 +85,8 @@ function Dashboard() {
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">Course Production Tracker</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Track each course through the 9 production stages.</p>
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">2026 Course Tracker</h1>
+              <p className="mt-1 text-sm text-muted-foreground">Track each 2026 course through the 11 production stages.</p>
             </div>
             <Button onClick={() => setDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" /> Add Course
