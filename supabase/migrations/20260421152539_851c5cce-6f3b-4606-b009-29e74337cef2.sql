@@ -1,0 +1,1 @@
+UPDATE public.courses SET start_date = date_assigned WHERE start_date IS NULL AND date_assigned IS NOT NULL;
