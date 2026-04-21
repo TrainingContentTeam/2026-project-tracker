@@ -187,7 +187,7 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
   useEffect(() => { setNotes(stage.notes ?? ""); }, [stage.notes]);
 
   return (
-    <div className={`rounded-lg border p-3 transition-colors ${stage.completed ? "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-900" : "bg-background"}`}>
+    <div className={`rounded-lg border p-3 transition-colors ${stage.completed ? "bg-success-muted border-success/30" : "bg-background"}`}>
       <div className="flex items-start gap-3">
         <Checkbox
           id={stage.id}
@@ -199,7 +199,7 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
           <label htmlFor={stage.id} className="flex items-center gap-2 cursor-pointer">
             <span className="text-xs text-muted-foreground">{String(index).padStart(2, "0")}</span>
             <span className={`font-medium ${stage.completed ? "text-foreground" : "text-foreground"}`}>{stage.stage_name}</span>
-            {stage.completed ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
+            {stage.completed ? <CheckCircle2 className="h-4 w-4 text-success" /> : <Circle className="h-4 w-4 text-muted-foreground" />}
           </label>
           {stage.completed_at && (
             <div className="text-xs text-muted-foreground mt-1">Completed {formatDate(stage.completed_at)}</div>

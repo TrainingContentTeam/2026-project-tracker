@@ -93,8 +93,8 @@ function Dashboard() {
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
           <StatCard label="Total Courses" value={stats.total} icon={<BookOpen className="h-5 w-5" />} />
-          <StatCard label="Completed" value={stats.completed} icon={<CheckCircle2 className="h-5 w-5 text-green-600" />} />
-          <StatCard label="In Progress" value={stats.inProgress} icon={<Clock className="h-5 w-5 text-amber-600" />} />
+          <StatCard label="Completed" value={stats.completed} icon={<CheckCircle2 className="h-5 w-5 text-success" />} />
+          <StatCard label="In Progress" value={stats.inProgress} icon={<Clock className="h-5 w-5 text-warning" />} />
           <StatCard label="Not Started" value={stats.notStarted} icon={<Clock className="h-5 w-5 text-muted-foreground" />} />
         </div>
 
