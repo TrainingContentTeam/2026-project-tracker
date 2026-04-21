@@ -150,6 +150,7 @@ function Dashboard() {
                       <th className="px-4 py-3 font-medium">Course Name</th>
                       <th className="px-4 py-3 font-medium">Quarter</th>
                       <th className="px-4 py-3 font-medium">Vertical</th>
+                      <th className="px-4 py-3 font-medium">Start</th>
                       <th className="px-4 py-3 font-medium">Due</th>
                       <th className="px-4 py-3 font-medium w-64">Progress</th>
                       <th className="px-4 py-3"></th>
@@ -167,6 +168,7 @@ function Dashboard() {
                           </td>
                           <td className="px-4 py-3 text-muted-foreground">{c.quarter ?? "—"}</td>
                           <td className="px-4 py-3"><Badge variant="secondary">{c.vertical ?? "—"}</Badge></td>
+                          <td className="px-4 py-3 text-muted-foreground">{formatDate(c.start_date)}</td>
                           <td className="px-4 py-3 text-muted-foreground">{formatDate(c.due_date)}</td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-3">
@@ -196,6 +198,8 @@ function Dashboard() {
                         <span>{c.quarter ?? "—"}</span>
                         <span>•</span>
                         <span>{c.vertical ?? "—"}</span>
+                        <span>•</span>
+                        <span>Start {formatDate(c.start_date)}</span>
                         <span>•</span>
                         <span>Due {formatDate(c.due_date)}</span>
                       </div>
