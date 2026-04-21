@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Course } from "@/lib/courses";
+import { friendlyError } from "@/lib/errors";
 
 interface Props {
   open: boolean;
@@ -76,14 +77,14 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
     if (course) {
       const { error } = await supabase.from("courses").update(payload).eq("id", course.id);
       setSaving(false);
-      if (error) return toast.error(error.message);
+      if (error) return toast.error(friendlyError(error));
       toast.success("Course updated");
       onSaved?.(course.id);
       onOpenChange(false);
     } else {
       const { data, error } = await supabase.from("courses").insert(payload).select("id").single();
       setSaving(false);
-      if (error) return toast.error(error.message);
+      if (error) return toast.error(friendlyError(error));
       toast.success("Course created");
       onSaved?.(data!.id);
       onOpenChange(false);
