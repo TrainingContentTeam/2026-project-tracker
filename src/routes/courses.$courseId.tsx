@@ -142,6 +142,7 @@ function CourseDetail() {
               <Field label="Start Date" value={formatDate(course.start_date)} />
               <Field label="Due Date" value={formatDate(course.due_date)} />
               <Field label="SME(s)" value={course.sme} />
+              <Field label="SME Email" value={course.sme_email} />
               <Field label="Voice Over Artist" value={course.voice_over_artist} />
               <Field label="Legal/Policy Review" value={course.legal_review_contact} />
               <Field label="Technical Tools" value={course.technical_tools} />
