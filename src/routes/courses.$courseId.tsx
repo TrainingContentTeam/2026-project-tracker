@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { CourseFormDialog } from "@/components/CourseFormDialog";
-import { ArrowLeft, Pencil, Trash2, CheckCircle2, Circle } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, CheckCircle2, Circle, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { friendlyError } from "@/lib/errors";
 import { useAuth } from "@/lib/auth";
@@ -111,8 +111,19 @@ function CourseDetail() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4 mr-1" /> Edit</Button>
-              <Button variant="outline" onClick={handleDelete} className="text-destructive hover:text-destructive"><Trash2 className="h-4 w-4 mr-1" /> Delete</Button>
+              {session ? (
+                <>
+                  <Button variant="outline" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4 mr-1" /> Edit</Button>
+                  <Button variant="outline" onClick={handleDelete} className="text-destructive hover:text-destructive"><Trash2 className="h-4 w-4 mr-1" /> Delete</Button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  <LogIn className="h-4 w-4 mr-1" /> Sign in to edit
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -128,7 +139,7 @@ function CourseDetail() {
             <Progress value={p.pct} className="mb-6" />
             <div className="space-y-3">
               {orderedStages.map((stage, i) => (
-                <StageRow key={stage.id} index={i + 1} stage={stage} onToggle={toggleStage} onNotesChange={updateNotes} />
+                <StageRow key={stage.id} index={i + 1} stage={stage} onToggle={toggleStage} onNotesChange={updateNotes} canEdit={!!session} />
               ))}
             </div>
           </Card>
@@ -231,11 +242,12 @@ ${yourName}`;
   toast.success(`Opened email draft to ${course.sme_email}`);
 }
 
-function StageRow({ index, stage, onToggle, onNotesChange }: {
+function StageRow({ index, stage, onToggle, onNotesChange, canEdit }: {
   index: number;
   stage: CourseStage;
   onToggle: (s: CourseStage, completed: boolean) => void;
   onNotesChange: (s: CourseStage, notes: string) => void;
+  canEdit: boolean;
 }) {
   const [notes, setNotes] = useState(stage.notes ?? "");
   const [showNotes, setShowNotes] = useState(false);
@@ -247,7 +259,8 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
         <Checkbox
           id={stage.id}
           checked={stage.completed}
-          onCheckedChange={(checked) => onToggle(stage, checked === true)}
+          onCheckedChange={(checked) => canEdit && onToggle(stage, checked === true)}
+          disabled={!canEdit}
           className="mt-0.5"
         />
         <div className="flex-1 min-w-0">
@@ -259,13 +272,15 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
           {stage.completed_at && (
             <div className="text-xs text-muted-foreground mt-1">Completed {formatDate(stage.completed_at)}</div>
           )}
-          <button
-            type="button"
-            onClick={() => setShowNotes((s) => !s)}
-            className="text-xs text-primary hover:underline mt-1"
-          >
-            {showNotes ? "Hide notes" : stage.notes ? "View notes" : "Add notes"}
-          </button>
+          {(canEdit || stage.notes) && (
+            <button
+              type="button"
+              onClick={() => setShowNotes((s) => !s)}
+              className="text-xs text-primary hover:underline mt-1"
+            >
+              {showNotes ? "Hide notes" : stage.notes ? "View notes" : "Add notes"}
+            </button>
+          )}
           {showNotes && (
             <div className="mt-2">
               <Textarea
@@ -274,6 +289,7 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
                 onBlur={() => { if (notes !== (stage.notes ?? "")) onNotesChange(stage, notes); }}
                 placeholder="Add notes for this stage..."
                 rows={2}
+                readOnly={!canEdit}
               />
             </div>
           )}

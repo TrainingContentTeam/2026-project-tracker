@@ -7,16 +7,21 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  const isPublic = pathname === "/login";
+  // Allow viewing the dashboard and course detail pages without login.
+  // Login is only required for actions that mutate data (handled in the UI).
+  const isPublic =
+    pathname === "/login" ||
+    pathname === "/" ||
+    pathname.startsWith("/courses/");
 
   useEffect(() => {
     if (loading) return;
     if (!session && !isPublic) {
       navigate({ to: "/login", replace: true });
-    } else if (session && isPublic) {
+    } else if (session && pathname === "/login") {
       navigate({ to: "/", replace: true });
     }
-  }, [session, loading, isPublic, navigate]);
+  }, [session, loading, isPublic, pathname, navigate]);
 
   if (loading) {
     return (
