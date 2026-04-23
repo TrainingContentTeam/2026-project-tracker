@@ -15,16 +15,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
     // Set up listener FIRST
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+      if (!mounted) return;
       setSession(s);
+      setLoading(false);
     });
     // Then read existing session
     supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
       setSession(data.session);
       setLoading(false);
+    }).catch(() => {
+      if (!mounted) return;
+      setLoading(false);
     });
-    return () => sub.subscription.unsubscribe();
+    // Safety net: never hang on a white screen
+    const t = setTimeout(() => {
+      if (mounted) setLoading(false);
+    }, 3000);
+    return () => {
+      mounted = false;
+      clearTimeout(t);
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   async function signOut() {
