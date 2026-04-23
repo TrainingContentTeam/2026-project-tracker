@@ -118,8 +118,8 @@ function CourseDetail() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 grid gap-6 lg:grid-cols-5">
+        <div className="lg:col-span-3 space-y-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg font-semibold">Production Stages</h2>
@@ -134,7 +134,7 @@ function CourseDetail() {
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="lg:col-span-2 space-y-6 min-w-0">
           <Card className="p-6">
             <h2 className="text-lg font-semibold mb-4">Details</h2>
             <dl className="space-y-3 text-sm">
@@ -179,9 +179,9 @@ function CourseDetail() {
 
 function Field({ label, value }: { label: string; value: string | null | undefined }) {
   return (
-    <div className="grid grid-cols-[140px_1fr] gap-2">
+    <div className="grid grid-cols-[160px_minmax(0,1fr)] gap-3">
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className="text-foreground break-words">{value || "—"}</dd>
+      <dd className="text-foreground break-words whitespace-pre-wrap min-w-0">{value || "—"}</dd>
     </div>
   );
 }
