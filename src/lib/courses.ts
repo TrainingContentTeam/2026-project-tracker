@@ -25,6 +25,7 @@ export interface Course {
   start_date: string | null;
   due_date: string | null;
   sme: string | null;
+  sme_email: string | null;
   voice_over_artist: string | null;
   legal_review_contact: string | null;
   technical_tools: string | null;

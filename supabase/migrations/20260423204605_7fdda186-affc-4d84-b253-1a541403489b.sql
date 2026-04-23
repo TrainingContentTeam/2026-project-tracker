@@ -1,0 +1,1 @@
+ALTER TABLE public.courses ADD COLUMN sme_email text;
