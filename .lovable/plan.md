@@ -1,63 +1,47 @@
 
+Goal: get the live tracker reachable without login.
 
-## Auto-open Outlook with prefilled email when "Outline" is checked
+Plan
 
-When you check off the **Outline** stage on a course, your computer's default mail client (Outlook) opens with a pre-filled draft addressed to that course's SME. You review it, edit if you want, and hit Send yourself. Nothing is sent automatically and no email service or domain setup is required.
+1. Publish the current frontend again
+- The codebase already contains the public read-only changes:
+  - `/` is marked public in `src/components/AuthGate.tsx`
+  - guest users can view the dashboard in `src/routes/index.tsx`
+  - guest users can view course details in `src/routes/courses.$courseId.tsx`
+- However, the live published URL is still serving the old sign-in page, which means the latest frontend bundle has not gone live yet.
 
-### How it works
+2. Re-verify live visibility settings
+- Keep publish visibility set to public.
+- Confirm the published deployment is attached to `https://progress-tracker-2026.lovable.app`.
 
-- Uses a `mailto:` link the browser hands off to Outlook (or whatever your default mail app is).
-- Triggered only when Outline transitions from unchecked → checked.
-- One-shot per session: a small confirmation toast appears so you know it fired.
+3. Re-test the live URL after publish
+- Check that the published homepage opens to the dashboard instead of `/login`.
+- Check that a course detail page also opens without authentication.
+- Confirm guests cannot edit, while signed-in users still can.
 
-### What you need on each course
+4. If the custom published URL still fails for the user specifically
+- Test the stable production URL for the same app as a fallback.
+- If the stable URL works but the named published URL does not, treat it as a hosting/DNS issue rather than an app code issue.
+- In that case, keep the app code unchanged and resolve it at the publishing/domain layer.
 
-A new **SME Email** field on the course (currently `sme` is just a name). I'll:
-- Add `sme_email` (text, nullable) to the `courses` table.
-- Add an "SME Email" input to the Add/Edit Course dialog.
-- Show "SME Email" in the course Details panel.
-- You backfill emails as you go — no bulk migration needed.
+What I expect to change
+- No new code changes should be needed unless the live deployment still ignores the current auth-gating logic after republishing.
+- If republishing does not fix it, the next code-level check would be whether any client redirect is forcing `/login` before session state settles, but the current `AuthGate` logic already allows `/` and `/courses/*` publicly.
 
-If a course has no `sme_email` when Outline is checked, you'll see a toast: *"Add an SME email to this course to auto-open the email."* The checkbox still works.
+Technical details
+- Current code already allows public viewing:
+  - `src/components/AuthGate.tsx`:
+    - public routes include `/` and `/courses/*`
+  - `src/routes/index.tsx`:
+    - guests see “Sign in to edit” instead of edit controls
+  - `src/routes/courses.$courseId.tsx`:
+    - guests can view details and stages, but edit controls are gated
+- Current live behavior mismatch:
+  - published URL is public at the hosting level
+  - fetched published page still shows the login screen
+  - that mismatch points to an out-of-date published frontend, not a missing code change
 
-### Email template (prefilled)
-
-- **To:** `course.sme_email`
-- **Subject:** `Lexipol Course Feedback — {Course Name}`
-- **Body:**
-  ```
-  Hi {SME Name},
-
-  Thank you for all of your time, effort, and support on this project. We truly appreciate your expertise and the value you brought throughout the process.
-
-  As we continue working to improve Lexipol's processes, we would appreciate your feedback. Please take a few minutes to complete this short survey:
-
-  https://forms.office.com/Pages/ResponsePage.aspx?id=gQX_kISeMUqFbHGtfNW2zSJ9aE9hPwVMqhL-mFTtfOxUMDdSNTdPV1RHVDNPTktUWk5OTDlaUUpJUy4u
-
-  Your input will help us refine our approach and make future projects even more effective.
-
-  Thank you again for your partnership and support.
-
-  Best,
-  {Your Name}
-  ```
-
-`{SME Name}` comes from the course's `sme` field (first name parsed if it looks like "First Last"). `{Your Name}` comes from the signed-in user's email (you can edit before sending).
-
-### Files changed
-
-- **DB migration**: add `sme_email` column to `courses`.
-- **`src/lib/courses.ts`**: add `sme_email` to the `Course` type.
-- **`src/components/CourseFormDialog.tsx`**: add "SME Email" input.
-- **`src/routes/courses.$courseId.tsx`**:
-  - Show SME Email in Details panel.
-  - In `toggleStage`, when `stage_name === "Outline"` and `completed === true`, build the `mailto:` URL and call `window.location.href = mailtoUrl` (or `window.open`).
-  - Show toast confirming the draft opened, or warn if `sme_email` is missing.
-
-### Notes / limits
-
-- The user's machine must have Outlook (or another mail app) set as the default `mailto:` handler. On Windows with Outlook installed this is the default.
-- Very long `mailto:` bodies can be truncated by some clients; this body is well under that limit.
-- No emails leave your app — Outlook handles delivery.
-- Easy to extend later to other stages (e.g. Published) if you want.
-
+Success criteria
+- Opening `https://progress-tracker-2026.lovable.app` shows the course dashboard for signed-out visitors
+- Opening any `/courses/:courseId` page works without login
+- Add/edit/delete actions remain restricted to signed-in users
