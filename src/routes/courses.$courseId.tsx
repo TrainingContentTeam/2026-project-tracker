@@ -55,8 +55,8 @@ function CourseDetail() {
       stages: c.stages.map((s) => s.id === stage.id ? { ...s, completed, completed_at: completed ? new Date().toISOString() : null } : s),
     } : c);
 
-    // Auto-open Outlook draft when Outline transitions to completed
-    if (completed && stage.stage_name === "Outline" && !stage.completed && course) {
+    // Auto-open Outlook draft when CQO transitions to completed
+    if (completed && stage.stage_name === "CQO" && !stage.completed && course) {
       openOutlineEmail(course, session?.user?.email ?? "");
     }
   }
