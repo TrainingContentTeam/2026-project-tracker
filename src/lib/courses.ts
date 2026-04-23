@@ -34,6 +34,7 @@ export interface Course {
   course_outline: string | null;
   uploaded_to_lms: string | null;
   progress_note: string | null;
+  sharepoint_link: string | null;
   created_at: string;
   updated_at: string;
 }

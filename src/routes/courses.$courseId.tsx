@@ -146,6 +146,7 @@ function CourseDetail() {
               <Field label="Voice Over Artist" value={course.voice_over_artist} />
               <Field label="Legal/Policy Review" value={course.legal_review_contact} />
               <Field label="Technical Tools" value={course.technical_tools} />
+              <FieldLink label="SharePoint" value={course.sharepoint_link} />
               <Field label="Lesson Plan" value={course.lesson_plan} />
               <Field label="Course Outline" value={course.course_outline} />
               <Field label="Uploaded to LMS" value={course.uploaded_to_lms} />
@@ -182,6 +183,23 @@ function Field({ label, value }: { label: string; value: string | null | undefin
     <div className="grid grid-cols-[160px_minmax(0,1fr)] gap-3">
       <dt className="text-muted-foreground">{label}</dt>
       <dd className="text-foreground break-words whitespace-pre-wrap min-w-0">{value || "—"}</dd>
+    </div>
+  );
+}
+
+function FieldLink({ label, value }: { label: string; value: string | null | undefined }) {
+  return (
+    <div className="grid grid-cols-[160px_minmax(0,1fr)] gap-3">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="min-w-0">
+        {value ? (
+          <a href={value} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
+            Open folder ↗
+          </a>
+        ) : (
+          <span className="text-foreground">—</span>
+        )}
+      </dd>
     </div>
   );
 }

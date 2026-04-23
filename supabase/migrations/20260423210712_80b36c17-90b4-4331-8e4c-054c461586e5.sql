@@ -1,0 +1,1 @@
+ALTER TABLE public.courses ADD COLUMN sharepoint_link text;
