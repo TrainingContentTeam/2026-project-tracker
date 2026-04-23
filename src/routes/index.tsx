@@ -45,9 +45,12 @@ function Dashboard() {
 
   const courses2026 = useMemo(
     () => courses.filter((c) => {
-      const q = c.quarter ?? "";
-      // Show 2026 courses + any course with no quarter set yet (newly added)
-      return q === "" || q.includes("2026");
+      const q = (c.quarter ?? "").trim();
+      if (q === "") return true;            // no quarter set → show
+      if (q.includes("2026")) return true;  // 2026 course → show
+      // Quarter has no 4-digit year (e.g. "Q2") → show
+      if (!/\b(19|20)\d{2}\b/.test(q)) return true;
+      return false;                         // older year → hide
     }),
     [courses],
   );
