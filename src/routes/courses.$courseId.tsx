@@ -187,6 +187,23 @@ function Field({ label, value }: { label: string; value: string | null | undefin
   );
 }
 
+function FieldLink({ label, value }: { label: string; value: string | null | undefined }) {
+  return (
+    <div className="grid grid-cols-[160px_minmax(0,1fr)] gap-3">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className="min-w-0">
+        {value ? (
+          <a href={value} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
+            Open folder ↗
+          </a>
+        ) : (
+          <span className="text-foreground">—</span>
+        )}
+      </dd>
+    </div>
+  );
+}
+
 function openOutlineEmail(course: CourseWithStages, signedInEmail: string) {
   if (!course.sme_email) {
     toast.warning("Add an SME email to this course to auto-open the email.");
