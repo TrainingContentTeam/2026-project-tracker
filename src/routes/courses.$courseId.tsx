@@ -186,6 +186,33 @@ function Field({ label, value }: { label: string; value: string | null | undefin
   );
 }
 
+function openOutlineEmail(course: CourseWithStages, signedInEmail: string) {
+  if (!course.sme_email) {
+    toast.warning("Add an SME email to this course to auto-open the email.");
+    return;
+  }
+  const smeName = (course.sme ?? "").trim().split(/\s+/)[0] || "there";
+  const yourName = signedInEmail ? signedInEmail.split("@")[0] : "";
+  const subject = `Lexipol Course Feedback — ${course.name}`;
+  const body = `Hi ${smeName},
+
+Thank you for all of your time, effort, and support on this project. We truly appreciate your expertise and the value you brought throughout the process.
+
+As we continue working to improve Lexipol's processes, we would appreciate your feedback. Please take a few minutes to complete this short survey:
+
+https://forms.office.com/Pages/ResponsePage.aspx?id=gQX_kISeMUqFbHGtfNW2zSJ9aE9hPwVMqhL-mFTtfOxUMDdSNTdPV1RHVDNPTktUWk5OTDlaUUpJUy4u
+
+Your input will help us refine our approach and make future projects even more effective.
+
+Thank you again for your partnership and support.
+
+Best,
+${yourName}`;
+  const mailto = `mailto:${encodeURIComponent(course.sme_email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+  toast.success(`Opened email draft to ${course.sme_email}`);
+}
+
 function StageRow({ index, stage, onToggle, onNotesChange }: {
   index: number;
   stage: CourseStage;
