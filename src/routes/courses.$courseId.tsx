@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { CourseFormDialog } from "@/components/CourseFormDialog";
-import { ArrowLeft, Pencil, Trash2, CheckCircle2, Circle } from "lucide-react";
+import { ArrowLeft, Pencil, Trash2, CheckCircle2, Circle, LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { friendlyError } from "@/lib/errors";
 import { useAuth } from "@/lib/auth";
@@ -111,8 +111,19 @@ function CourseDetail() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4 mr-1" /> Edit</Button>
-              <Button variant="outline" onClick={handleDelete} className="text-destructive hover:text-destructive"><Trash2 className="h-4 w-4 mr-1" /> Delete</Button>
+              {session ? (
+                <>
+                  <Button variant="outline" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4 mr-1" /> Edit</Button>
+                  <Button variant="outline" onClick={handleDelete} className="text-destructive hover:text-destructive"><Trash2 className="h-4 w-4 mr-1" /> Delete</Button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  <LogIn className="h-4 w-4 mr-1" /> Sign in to edit
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -128,7 +139,7 @@ function CourseDetail() {
             <Progress value={p.pct} className="mb-6" />
             <div className="space-y-3">
               {orderedStages.map((stage, i) => (
-                <StageRow key={stage.id} index={i + 1} stage={stage} onToggle={toggleStage} onNotesChange={updateNotes} />
+                <StageRow key={stage.id} index={i + 1} stage={stage} onToggle={toggleStage} onNotesChange={updateNotes} canEdit={!!session} />
               ))}
             </div>
           </Card>
