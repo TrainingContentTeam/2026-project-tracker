@@ -25,6 +25,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
     start_date: "",
     due_date: "",
     sme: "",
+    sme_email: "",
     voice_over_artist: "",
     legal_review_contact: "",
     technical_tools: "",
@@ -42,6 +43,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
         start_date: course.start_date ?? "",
         due_date: course.due_date ?? "",
         sme: course.sme ?? "",
+        sme_email: course.sme_email ?? "",
         voice_over_artist: course.voice_over_artist ?? "",
         legal_review_contact: course.legal_review_contact ?? "",
         technical_tools: course.technical_tools ?? "",
@@ -50,7 +52,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
     } else {
       setForm({
         name: "", quarter: "", vertical: "", date_assigned: "", start_date: "", due_date: "",
-        sme: "", voice_over_artist: "", legal_review_contact: "", technical_tools: "", comments: "",
+        sme: "", sme_email: "", voice_over_artist: "", legal_review_contact: "", technical_tools: "", comments: "",
       });
     }
   }, [course, open]);
@@ -69,6 +71,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
       quarter: form.quarter || null,
       vertical: form.vertical || null,
       sme: form.sme || null,
+      sme_email: form.sme_email || null,
       voice_over_artist: form.voice_over_artist || null,
       legal_review_contact: form.legal_review_contact || null,
       technical_tools: form.technical_tools || null,
@@ -134,15 +137,21 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
               <Input id="sme" value={form.sme} onChange={(e) => setForm({ ...form, sme: e.target.value })} />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="voice_over_artist">Voice Over Artist</Label>
-              <Input id="voice_over_artist" value={form.voice_over_artist} onChange={(e) => setForm({ ...form, voice_over_artist: e.target.value })} />
+              <Label htmlFor="sme_email">SME Email</Label>
+              <Input id="sme_email" type="email" placeholder="sme@example.com" value={form.sme_email} onChange={(e) => setForm({ ...form, sme_email: e.target.value })} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
+              <Label htmlFor="voice_over_artist">Voice Over Artist</Label>
+              <Input id="voice_over_artist" value={form.voice_over_artist} onChange={(e) => setForm({ ...form, voice_over_artist: e.target.value })} />
+            </div>
+            <div className="grid gap-2">
               <Label htmlFor="legal_review_contact">Legal/Policy Review</Label>
               <Input id="legal_review_contact" value={form.legal_review_contact} onChange={(e) => setForm({ ...form, legal_review_contact: e.target.value })} />
             </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="technical_tools">Technical Tools</Label>
               <Input id="technical_tools" placeholder="RISE, Storyline..." value={form.technical_tools} onChange={(e) => setForm({ ...form, technical_tools: e.target.value })} />

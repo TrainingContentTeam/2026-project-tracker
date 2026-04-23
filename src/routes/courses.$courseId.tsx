@@ -12,6 +12,7 @@ import { CourseFormDialog } from "@/components/CourseFormDialog";
 import { ArrowLeft, Pencil, Trash2, CheckCircle2, Circle } from "lucide-react";
 import { toast } from "sonner";
 import { friendlyError } from "@/lib/errors";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/courses/$courseId")({
   component: CourseDetail,
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/courses/$courseId")({
 function CourseDetail() {
   const { courseId } = Route.useParams();
   const navigate = useNavigate();
+  const { session } = useAuth();
   const [course, setCourse] = useState<CourseWithStages | null>(null);
   const [loading, setLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
@@ -52,6 +54,11 @@ function CourseDetail() {
       ...c,
       stages: c.stages.map((s) => s.id === stage.id ? { ...s, completed, completed_at: completed ? new Date().toISOString() : null } : s),
     } : c);
+
+    // Auto-open Outlook draft when Outline transitions to completed
+    if (completed && stage.stage_name === "Outline" && !stage.completed && course) {
+      openOutlineEmail(course, session?.user?.email ?? "");
+    }
   }
 
   async function updateNotes(stage: CourseStage, notes: string) {
