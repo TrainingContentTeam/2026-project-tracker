@@ -44,7 +44,11 @@ function Dashboard() {
   useEffect(() => { load(); }, []);
 
   const courses2026 = useMemo(
-    () => courses.filter((c) => (c.quarter ?? "").includes("2026")),
+    () => courses.filter((c) => {
+      const q = c.quarter ?? "";
+      // Show 2026 courses + any course with no quarter set yet (newly added)
+      return q === "" || q.includes("2026");
+    }),
     [courses],
   );
 
