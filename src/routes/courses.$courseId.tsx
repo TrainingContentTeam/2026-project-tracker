@@ -242,11 +242,12 @@ ${yourName}`;
   toast.success(`Opened email draft to ${course.sme_email}`);
 }
 
-function StageRow({ index, stage, onToggle, onNotesChange }: {
+function StageRow({ index, stage, onToggle, onNotesChange, canEdit }: {
   index: number;
   stage: CourseStage;
   onToggle: (s: CourseStage, completed: boolean) => void;
   onNotesChange: (s: CourseStage, notes: string) => void;
+  canEdit: boolean;
 }) {
   const [notes, setNotes] = useState(stage.notes ?? "");
   const [showNotes, setShowNotes] = useState(false);
@@ -258,7 +259,8 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
         <Checkbox
           id={stage.id}
           checked={stage.completed}
-          onCheckedChange={(checked) => onToggle(stage, checked === true)}
+          onCheckedChange={(checked) => canEdit && onToggle(stage, checked === true)}
+          disabled={!canEdit}
           className="mt-0.5"
         />
         <div className="flex-1 min-w-0">
@@ -270,13 +272,15 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
           {stage.completed_at && (
             <div className="text-xs text-muted-foreground mt-1">Completed {formatDate(stage.completed_at)}</div>
           )}
-          <button
-            type="button"
-            onClick={() => setShowNotes((s) => !s)}
-            className="text-xs text-primary hover:underline mt-1"
-          >
-            {showNotes ? "Hide notes" : stage.notes ? "View notes" : "Add notes"}
-          </button>
+          {(canEdit || stage.notes) && (
+            <button
+              type="button"
+              onClick={() => setShowNotes((s) => !s)}
+              className="text-xs text-primary hover:underline mt-1"
+            >
+              {showNotes ? "Hide notes" : stage.notes ? "View notes" : "Add notes"}
+            </button>
+          )}
           {showNotes && (
             <div className="mt-2">
               <Textarea
@@ -285,6 +289,7 @@ function StageRow({ index, stage, onToggle, onNotesChange }: {
                 onBlur={() => { if (notes !== (stage.notes ?? "")) onNotesChange(stage, notes); }}
                 placeholder="Add notes for this stage..."
                 rows={2}
+                readOnly={!canEdit}
               />
             </div>
           )}
