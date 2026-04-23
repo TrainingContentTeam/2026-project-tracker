@@ -146,6 +146,7 @@ function CourseDetail() {
               <Field label="Voice Over Artist" value={course.voice_over_artist} />
               <Field label="Legal/Policy Review" value={course.legal_review_contact} />
               <Field label="Technical Tools" value={course.technical_tools} />
+              <FieldLink label="SharePoint" value={course.sharepoint_link} />
               <Field label="Lesson Plan" value={course.lesson_plan} />
               <Field label="Course Outline" value={course.course_outline} />
               <Field label="Uploaded to LMS" value={course.uploaded_to_lms} />

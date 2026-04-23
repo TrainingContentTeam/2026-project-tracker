@@ -29,6 +29,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
     voice_over_artist: "",
     legal_review_contact: "",
     technical_tools: "",
+    sharepoint_link: "",
     comments: "",
   });
   const [saving, setSaving] = useState(false);
@@ -47,12 +48,13 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
         voice_over_artist: course.voice_over_artist ?? "",
         legal_review_contact: course.legal_review_contact ?? "",
         technical_tools: course.technical_tools ?? "",
+        sharepoint_link: course.sharepoint_link ?? "",
         comments: course.comments ?? "",
       });
     } else {
       setForm({
         name: "", quarter: "", vertical: "", date_assigned: "", start_date: "", due_date: "",
-        sme: "", sme_email: "", voice_over_artist: "", legal_review_contact: "", technical_tools: "", comments: "",
+        sme: "", sme_email: "", voice_over_artist: "", legal_review_contact: "", technical_tools: "", sharepoint_link: "", comments: "",
       });
     }
   }, [course, open]);
@@ -75,6 +77,7 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
       voice_over_artist: form.voice_over_artist || null,
       legal_review_contact: form.legal_review_contact || null,
       technical_tools: form.technical_tools || null,
+      sharepoint_link: form.sharepoint_link || null,
       comments: form.comments || null,
     };
     if (course) {
@@ -156,6 +159,10 @@ export function CourseFormDialog({ open, onOpenChange, course, onSaved }: Props)
               <Label htmlFor="technical_tools">Technical Tools</Label>
               <Input id="technical_tools" placeholder="RISE, Storyline..." value={form.technical_tools} onChange={(e) => setForm({ ...form, technical_tools: e.target.value })} />
             </div>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="sharepoint_link">SharePoint Link</Label>
+            <Input id="sharepoint_link" type="url" placeholder="https://lexipol.sharepoint.com/..." value={form.sharepoint_link} onChange={(e) => setForm({ ...form, sharepoint_link: e.target.value })} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="comments">Comments / Tasks</Label>
