@@ -84,7 +84,12 @@ export function progressOf(stages: CourseStage[]): { done: number; total: number
 export function formatDate(d: string | null | undefined): string {
   if (!d) return "—";
   try {
-    return new Date(d).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    // Parse YYYY-MM-DD as a local calendar date to avoid UTC->local day shift
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
+    const date = m
+      ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]))
+      : new Date(d);
+    return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
   } catch {
     return d;
   }
