@@ -11,6 +11,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
   // Login is only required for actions that mutate data (handled in the UI).
   const isPublic =
     pathname === "/login" ||
+    pathname === "/reset-password" ||
     pathname === "/" ||
     pathname.startsWith("/courses/");
 

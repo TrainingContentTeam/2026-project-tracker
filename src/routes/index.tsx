@@ -18,6 +18,10 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "2026 Course Tracker" },
       { name: "description", content: "Dashboard for tracking e-learning course production stages." },
+      { property: "og:title", content: "2026 Course Tracker" },
+      { property: "og:description", content: "Dashboard for tracking e-learning course production stages." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });

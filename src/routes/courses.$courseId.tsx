@@ -17,7 +17,14 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/courses/$courseId")({
   component: CourseDetail,
   head: () => ({
-    meta: [{ title: "Course Detail — Course Production Tracker" }],
+    meta: [
+      { title: "Course Detail — 2026 Course Tracker" },
+      { name: "description", content: "Course details and production stages in the 2026 Course Tracker." },
+      { property: "og:title", content: "Course Detail — 2026 Course Tracker" },
+      { property: "og:description", content: "View course details and production stage progress." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
   }),
   errorComponent: () => (
     <div className="p-8 text-center">

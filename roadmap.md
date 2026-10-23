@@ -1,0 +1,2 @@
+- [x] Add email password recovery and a public new-password page.
+- [x] Verify recovery controls and request a reset email for the requesting user (accepted; inbox delivery and password change await the user).
