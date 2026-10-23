@@ -1,0 +1,2 @@
+- [ ] Add email password recovery and a public new-password page.
+- [ ] Verify recovery controls and request a reset email for the requesting user.

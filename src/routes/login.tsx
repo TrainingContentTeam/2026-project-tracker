@@ -10,13 +10,35 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
-  head: () => ({ meta: [{ title: "Sign in — Course Production Tracker" }] }),
+  head: () => ({ meta: [
+    { title: "Sign in — 2026 Course Tracker" },
+    { name: "description", content: "Sign in or recover access to your 2026 Course Tracker account." },
+    { property: "og:title", content: "Sign in — 2026 Course Tracker" },
+    { property: "og:description", content: "Sign in or recover access to your course tracker account." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary" },
+  ] }),
 });
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [recovering, setRecovering] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
+  async function handleReset(e: FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) { toast.error("Unable to send the reset email. Please try again shortly."); return; }
+      setResetSent(true);
+    } catch { toast.error("Unable to connect. Please try again."); }
+    finally { setSubmitting(false); }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -33,23 +55,26 @@ function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-sm p-6">
-        <h1 className="text-xl font-semibold text-foreground">Sign in</h1>
+        <h1 className="text-xl font-semibold text-foreground">{recovering ? "Forgot password?" : "Sign in"}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Sign in to access the Course Production Tracker.
+          {recovering ? "Reset your 2026 Course Tracker password." : "Sign in to access the Course Production Tracker."}
         </p>
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+        {resetSent ? <p role="status" className="mt-6 text-sm text-foreground">If an account exists for this email, you’ll receive a password reset link. Check your inbox and junk folder.</p> : <form className="mt-6 space-y-4" onSubmit={recovering ? handleReset : handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
-          <div className="space-y-2">
+          {!recovering && <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
+          </div>}
           <Button type="submit" className="w-full" disabled={submitting}>
-            {submitting ? "Signing in..." : "Sign in"}
+            {submitting ? (recovering ? "Sending…" : "Signing in...") : recovering ? "Send reset link" : "Sign in"}
           </Button>
-        </form>
+        </form>}
+        <Button type="button" variant="link" className="mt-2 w-full" disabled={submitting} onClick={() => { setRecovering(!recovering); setResetSent(false); setPassword(""); }}>
+          {recovering ? "Back to sign in" : "Forgot password?"}
+        </Button>
         <p className="mt-4 text-xs text-muted-foreground">
           Accounts are managed by your administrator. Contact them if you need access.
         </p>

@@ -42,8 +42,6 @@ export const Route = createRootRoute({
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "Course Progress Tracker" },
       { name: "twitter:description", content: "project management course tracker." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bf288e53-6984-4d76-9703-f2c623d9dc6c/id-preview-e2ca62ab--bb59dc0d-a70a-40d7-97ad-9e5b7111f9b4.lovable.app-1776789248457.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bf288e53-6984-4d76-9703-f2c623d9dc6c/id-preview-e2ca62ab--bb59dc0d-a70a-40d7-97ad-9e5b7111f9b4.lovable.app-1776789248457.png" },
     ],
     links: [
       {
